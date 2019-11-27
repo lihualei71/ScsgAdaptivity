@@ -25,28 +25,6 @@ x0 = np.zeros(p * 9)
 loss = "multi_logistic"
 pickle.dump((smoothparam, x0, loss), open("../data/mnist_params.p", "wb"))
 
-# Covtype
-
-# df = np.loadtxt("../data/covtype.data", delimiter=",")
-# A = df[:, range(54)]
-# A = normalize(A, axis=0, norm='l2') * np.sqrt(A.shape[0])
-# y = np.array(df[:, 54] - 1, dtype="int8")
-# Llist = np.array([norm2(a) for a in A])
-# ids = np.where(Llist <= np.percentile(Llist, 95))
-# A = A[ids]
-# y = y[ids]
-# np.save("../data/covtype_A.npy", A)
-# np.save("../data/covtype_y.npy", y)
-
-A = np.load("../data/covtype_A.npy")
-y = np.load("../data/covtype_y.npy")
-n, p = A.shape
-
-smoothparam = 2 * np.mean([norm2(a) for a in A])
-x0 = np.zeros(p * 7)
-loss = "multi_logistic"
-pickle.dump((smoothparam, x0, loss), open("../data/covtype_params.p", "wb"))
-
 # Adult
 
 # df = pd.read_csv("../data/adult.data")
@@ -69,54 +47,6 @@ smoothparam = 2 * np.mean([norm2(a) for a in A])
 x0 = np.zeros(p * 7)
 loss = "multi_logistic"
 pickle.dump((smoothparam, x0, loss), open("../data/adult_params.p", "wb"))
-
-# Blog
-
-# df = pd.read_csv('../data/blogData_train.csv')
-# A = np.array(df.iloc[:, range(280)])
-# A = normalize(A, axis=0, norm='l2') * np.sqrt(A.shape[0])
-# y = np.array(df.iloc[:, 280])
-# Llist = np.array([norm2(a) for a in A])
-# ids = np.where(Llist <= np.percentile(Llist, 95))
-# A = A[ids]
-# y = y[ids]
-# np.save("../data/blog_A.npy", A)
-# np.save("../data/blog_y.npy", y)
-
-A = np.load("../data/blog_A.npy")
-y = np.load("../data/blog_y.npy")
-
-n = A.shape[0]
-p = A.shape[1]
-
-smoothparam = 2 * np.mean([norm2(a) for a in A])
-x0 = np.zeros(p)
-loss = "least_squares"
-pickle.dump((smoothparam, x0, loss), open("../data/blog_params.p", "wb"))
-
-# Energy
-
-# df = pd.read_csv('../data/energydata_complete.csv')
-# A = np.array(df.iloc[:, np.arange(25) + 2])
-# A = normalize(A, axis=0, norm='l2') * np.sqrt(A.shape[0])
-# y = np.array(df.iloc[:, 1])
-# Llist = np.array([norm2(a) for a in A])
-# ids = np.where(Llist <= np.percentile(Llist, 95))
-# A = A[ids]
-# y = y[ids]
-# np.save("../data/energy_A.npy", A)
-# np.save("../data/energy_y.npy", y)
-
-A = np.load("../data/energy_A.npy")
-y = np.load("../data/energy_y.npy")
-
-n = A.shape[0]
-p = A.shape[1]
-
-smoothparam = 2 * np.mean([norm2(a) for a in A])
-x0 = np.zeros(p)
-loss = "least_squares"
-pickle.dump((smoothparam, x0, loss), open("../data/energy_params.p", "wb"))
 
 # Credit
 
@@ -220,28 +150,3 @@ x0 = np.zeros(p * 5)
 loss = "multi_logistic"
 pickle.dump((smoothparam, x0, loss), open(
     "../data/crowdsource_params.p", "wb"))
-
-# Superconduct
-
-# df = pd.read_csv('../data/superconduct.csv')
-# y = np.array(df['critical_temp'])
-# A = np.array(df.iloc[:, np.arange(81)])
-# A = normalize(A, axis=0, norm='l2') * np.sqrt(A.shape[0])
-# Llist = np.array([norm2(a) for a in A])
-# ids = np.where(Llist <= np.percentile(Llist, 95))
-# A = A[ids]
-# y = y[ids]
-# np.save("../data/superconduct_A.npy", A)
-# np.save("../data/superconduct_y.npy", y)
-
-A = np.load("../data/superconduct_A.npy")
-y = np.load("../data/superconduct_y.npy")
-
-n = A.shape[0]
-p = A.shape[1]
-
-smoothparam = 2 * np.mean([norm2(a) for a in A])
-x0 = np.zeros(p)
-loss = "least_squares"
-pickle.dump((smoothparam, x0, loss), open(
-    "../data/superconduct_params.p", "wb"))

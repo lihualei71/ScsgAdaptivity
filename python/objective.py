@@ -1,18 +1,4 @@
-import scipy.optimize
-import pdb
 from utils import *
-
-
-def least_squares_grad(x, A, y):
-
-    resid = (np.dot(A, x) - y)
-    grad = np.dot(A.transpose(), resid) / len(y)
-    return grad
-
-
-def least_squares_funcval(x, A, y):
-
-    return norm2(np.dot(A, x) - y) / len(y) / 2
 
 
 def truncate(x, high=1 - 1e-6, low=1e-6):

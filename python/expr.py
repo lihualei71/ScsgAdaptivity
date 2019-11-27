@@ -52,11 +52,7 @@ B0 = int(np.ceil(n * B0))
 L, x0, loss = pickle.load(open('../data/' + dataset + '_params.p', "rb"))
 eta = etaconst / L
 
-if (loss == "least_squares"):
-    sgrad_eval = grad_to_sgrad(least_squares_grad, A, y)
-    func_eval = lambda x: least_squares_funcval(x, A, y)
-    grad_eval = lambda x: least_squares_grad(x, A, y)
-elif (loss == "multi_logistic"):
+if (loss == "multi_logistic"):
     num_class = int(len(x0) / p + 1)
     sgrad_eval = grad_to_sgrad(multi_logistic_grad, A, y, num_class)
     func_eval = lambda x: multi_logistic_funcval(x, A, y, num_class)
@@ -64,25 +60,21 @@ elif (loss == "multi_logistic"):
 
 np.random.seed(seed)
 
+print('-----------------  SCSG  -------------------', '\n')
+res_scsg = scsg(sgrad_eval, eta, x0, m0, B0, alpha,
+                func_eval, grad_eval,
+                n=n, b=b, use_geom=True,
+                max_ngrads=npass * n, lam=lam)
+
 print('-----------------  SVRG  -------------------', '\n')
 res_svrg = svrg(sgrad_eval, eta, x0, n,
                 func_eval, grad_eval,
                 b=b, max_ngrads=npass * n, lam=lam)
 
-print('-----------------  SVRG++  -------------------', '\n')
-res_svrgpp = svrgpp(sgrad_eval, eta, x0, n,
-                    func_eval, grad_eval,
-                    b=b, max_ngrads=npass * n, lam=lam)
-
 print('-----------------  SARAH  -------------------', '\n')
 res_sarah = sarah(sgrad_eval, eta, x0, n,
                   func_eval, grad_eval,
                   b=b, max_ngrads=npass * n, lam=lam)
-
-print('-----------------  SARAH++  -------------------', '\n')
-res_sarahpp = sarahpp(sgrad_eval, eta, x0, n,
-                      func_eval, grad_eval,
-                      b=b, max_ngrads=npass * n, lam=lam)
 
 print('----------------  Katyusha_ns  -----------------', '\n')
 res_katyusha_ns = katyusha_ns(sgrad_eval, eta, x0, n,
@@ -96,22 +88,8 @@ res_sgd1 = sgd(sgrad_eval, eta, x0,
                decay=0, avg=False,
                n=n, b=b, max_ngrads=npass * n, lam=lam)
 
-print('-----------------  SGD0.5  -------------------', '\n')
-res_sgd2 = sgd(sgrad_eval, eta, x0,
-               func_eval, grad_eval,
-               decay=0.5, avg=True,
-               n=n, b=b,
-               max_ngrads=npass * n, lam=lam)
-
-print('-----------------  SGD0.66  ------------------', '\n')
-res_sgd3 = sgd(sgrad_eval, eta, x0,
-               func_eval, grad_eval,
-               decay=2 / 3, avg=True,
-               n=n, b=b,
-               max_ngrads=npass * n, lam=lam)
-
 print('-----------------  SGD1.0  -------------------', '\n')
-res_sgd4 = sgd(sgrad_eval, eta, x0,
+res_sgd2 = sgd(sgrad_eval, eta, x0,
                func_eval, grad_eval,
                decay=1.0, avg=False,
                n=n, b=b,
@@ -122,22 +100,10 @@ res_gd = gd(sgrad_eval, eta, x0, n,
             func_eval, grad_eval,
             max_ngrads=50 * n, lam=lam)
 
-print('-----------------  SCSG  -------------------', '\n')
-res_scsg = scsg(sgrad_eval, eta, x0, m0, B0, alpha,
-                func_eval, grad_eval,
-                n=n, b=b, use_geom=True,
-                max_ngrads=npass * n, lam=lam)
-
-# print('-------------  SCSG no geom  ---------------', '\n')
-# res_scsg2 = scsg(sgrad_eval, eta, x0, m0, B0, alpha,
-#                  func_eval, grad_eval,
-#                  n=n, b=b, use_geom=False,
-#                  max_ngrads=npass * n, lam=lam)
-
 res = (res_scsg,
-       res_svrg, res_svrgpp,
-       res_sarah, res_sarahpp,
+       res_svrg,
+       res_sarah,
        res_katyusha_ns,
-       res_sgd1, res_sgd2, res_sgd3, res_sgd4,
+       res_sgd1, res_sgd2,
        res_gd)
 pickle.dump(res, open(filename, "wb"))
