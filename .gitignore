@@ -1,0 +1,6 @@
+*backup*
+*~
+*.npy
+figs/*
+data/*
+results/*
