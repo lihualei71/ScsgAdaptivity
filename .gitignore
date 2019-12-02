@@ -4,3 +4,5 @@
 figs/*
 data/*
 results/*
+jobs/SCSG_expr_params.sh
+jobs/pyparams.sh
