@@ -34,4 +34,4 @@ mkdir log
 sbatch SCSG_job.sh
 ```
 
-Please contact lihualeillh@stanford.edu for further questions.
+Please contact lihualei@stanford.edu for further questions.
